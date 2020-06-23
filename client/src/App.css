@@ -1,0 +1,48 @@
+.Container {
+  margin: 5%;
+  position: absolute;
+  height: 100%;
+  width: auto;
+}
+.wrp {
+  border-style: solid;
+  border-color: white;
+}
+/* figcaption {
+} */
+.tds {
+  padding: 50px;
+}
+.tdprice {
+  padding: 50px;
+  font-weight: bold;
+  font-size: large;
+}
+h3 {
+  color: black;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  margin: 3%;
+}
+.tdd {
+  padding: 100px;
+}
+td {
+  padding: 5px;
+}
+table {
+  border-collapse: collapse;
+  border: 1px soli white;
+}
+Button {
+  color: grey;
+}
+img {
+  height: 300px;
+  width: 200px;
+}
+.price {
+  font-size: large;
+  color: gray;
+}
