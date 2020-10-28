@@ -6,7 +6,10 @@ import {
   TakeOffCart,
   addToCart,
   RemoveProudct,
-  totalPrice,
+  SubTotalPrice,
+  Taxes,
+  TshirtDis,
+  ShoesDis
 } from "./services/proudctServices";
 import "bootstrap/dist/css/bootstrap.css";
 import Button from "react-bootstrap/Button";
@@ -18,15 +21,22 @@ class App extends Component {
   };
   constructor() {
     super();
-    this.reqBody = { name: "" };
+    this.reqBody = { name: "" , total:""};
   }
 
   async componentDidMount() {
-    this.totalPrice();
+    this.SubTotalPrice();
+    this.TshirtDis();
+    this.ShoesDis();
+   
+   
+
     try {
+      
       const proudcts = await viewProudcts();
 
       var z = 0;
+ 
       for (z in proudcts) {
         this.setState({
           proudcts: [
@@ -41,9 +51,13 @@ class App extends Component {
             },
           ],
         });
+        
+      
         z = z + 1;
-      }
-    } catch (error) {
+      
+      }  }
+      
+     catch (error) {
       console.log(error.message);
     }
   }
@@ -79,13 +93,49 @@ class App extends Component {
     }
     window.location.reload();
   }
-  async totalPrice() {
+  async SubTotalPrice() {
     try {
-      const result = await totalPrice();
+      const result = await SubTotalPrice();
       this.setState({ total: result });
     } catch (error) {
       console.log(error.message);
     }
+  }
+  async ShoesDis() {
+    try {
+      const result = await ShoesDis();
+      this.setState({ ShoesDis: result });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+  async TshirtDis() {
+    try {
+      const result = await TshirtDis();
+      this.setState({ TshirtDis: result });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+  async Taxes(x) {  
+    
+    this.reqBody.total = x;
+    try {
+     
+      const result = await Taxes(this.reqBody);
+      this.setState({ taxes: result });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+  Tax(){
+     this.Taxes(this.state.total)
+   return parseFloat(this.state.taxes)
+  }
+  finalPrice(){
+  
+    var Ftotal = this.state.total+this.state.taxes-this.state.TshirtDis-this.state.ShoesDis
+  return parseFloat(Ftotal)
   }
   render() {
     const listItems = this.state.proudcts.map((d) => (
@@ -107,6 +157,7 @@ class App extends Component {
             <Button
               onClick={() => {
                 this.addToCart(d.name);
+               
               }}
             >
               +
@@ -119,6 +170,7 @@ class App extends Component {
             <Button
               onClick={() => {
                 this.TakeOffCart(d.name);
+               
               }}
             >
               -
@@ -145,20 +197,23 @@ class App extends Component {
 
     return (
       <div class="Container">
-        <h1>Shopping Cart</h1>
+        <h1>Shopping Cart</h1> 
 
         <br />
         <div className="list">
           <figure className="card wrp">
             {listItems}{" "}
-            <h3>
-              Subtotal: <p class="price">${this.state.total}</p>{" "}
-            </h3>
+            <span>Subtotal: <p class="price">${this.state.total}</p></span>
+            <span>Taxes:<p class="price">${Number((this.Tax()).toFixed(3))}</p></span>
+            <span> Discounts:</span>
+            <span>10% off shoes: <p class="price">-${this.state.ShoesDis}</p></span>
+            <span>50% off jacket: <p class="price">-${this.state.TshirtDis}</p></span>
+           <span>Total : <p class="price"> ${Number((this.finalPrice()).toFixed(3))}</p> </span>
           </figure>
         </div>
       </div>
     );
-  }
+  }  
 }
 
 export default App;

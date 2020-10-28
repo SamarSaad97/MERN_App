@@ -4,19 +4,12 @@ const { string } = require("joi");
 const ProudctSchema = new mongoose.Schema({
   name: String,
   image: String, //img url
-  status: {
-    type: String,
-    enum: ["Available", "Out Of Stock"],
-  },
   description: String,
   price: Number,
-
-  NumOfItemsInStock: {
-    type: Number,
-  },
+  PriceInEGP: Number,
   NumOfItemsInCart: {
     type: Number,
-    default: 1,
+    default: 0,
   },
   totalPrice: Number,
 });
